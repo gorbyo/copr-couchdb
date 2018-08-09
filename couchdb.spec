@@ -7,8 +7,8 @@
 %undefine _missing_build_ids_terminate_build
 
 Name:          couchdb
-Version:       2.1.2
-Release:       2%{?dist}
+Version:       2.2.0
+Release:       1%{?dist}
 Summary:       A document database server, accessible via a RESTful JSON API
 Group:         Applications/Databases
 License:       Apache
@@ -109,6 +109,10 @@ getent passwd %{name} >/dev/null || \
 
 
 %changelog
+* Thu Aug 9 2018 Adrien Vergé <adrienverge@gmail.com> 2.2.0-1
+- Update to new upstream version
+- Customizing args file is now supported upstream
+
 * Mon Sep 24 2018 Adrien Vergé <adrienverge@gmail.com> 2.1.2-2
 - Use Erlang 20 (previously: 16)
 
