@@ -7,17 +7,18 @@
 %undefine _missing_build_ids_terminate_build
 
 Name:          couchdb
-Version:       2.1.2
-Release:       2%{?dist}
+Version:       2.2.0
+Release:       1%{?dist}
 Summary:       A document database server, accessible via a RESTful JSON API
 Group:         Applications/Databases
 License:       Apache
 URL:           http://couchdb.apache.org/
-Source0:       http://apache.mirrors.ovh.net/ftp.apache.org/dist/couchdb/source/%{version}/apache-couchdb-%{version}.tar.gz
+Source0:       https://www-eu.apache.org/dist/couchdb/source/%{version}/apache-couchdb-%{version}.tar.gz
 Source1:       %{name}.service
-Source2:       usr-bin-couchdb
-Patch1:        0001-Explicit-Python-version-in-scripts.patch
-Patch2:        0002-Read-config-from-env-COUCHDB_VM_ARGS-and-COUCHDB_INI.patch
+Source2:       %{name}.tmpfiles.conf
+Source3:       usr-bin-couchdb
+Patch1:        0001-fix-python-version.patch
+Patch2:        0002-load-config-ini-from-env.patch
 
 %if 0%{?rhel}
 # Needs packages.erlang-solutions.com repo in /etc/mock/epel-7-x86_64.cfg,
@@ -52,6 +53,7 @@ JavaScript acting as the default view definition language.
 %patch2 -p1
 
 
+
 %build
 ./configure --skip-deps --disable-docs
 
@@ -65,13 +67,19 @@ sed -i 's|\./data\b|%{_sharedstatedir}/%{name}|g' rel/couchdb/etc/default.ini
 mkdir -p %{buildroot}/opt
 cp -r rel/couchdb %{buildroot}/opt
 
-install -D -m 755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}
+install -D -m 755 %{SOURCE3} %{buildroot}%{_bindir}/%{name}
 
 # Have conf in /etc/couchdb, not /opt/couchdb/etc
 mkdir -p %{buildroot}%{_sysconfdir}
 mv %{buildroot}/opt/couchdb/etc %{buildroot}%{_sysconfdir}/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}/local.d
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}/default.d
 
+# Install systemd entry
 install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+
+# Install tmpfiles.d entry
+install -D -m 644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/%{name}.conf
 
 mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
 
@@ -97,18 +105,26 @@ getent passwd %{name} >/dev/null || \
 /opt/couchdb
 %{_bindir}/%{name}
 
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/local.d
+%dir %{_sysconfdir}/%{name}/default.d
+%config %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/local.d/README
 %config %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/default.d/README
 %config %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/default.ini
-%config %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/local.d/README
 %config(noreplace) %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/local.ini
 %config(noreplace) %attr(0644, %{name}, %{name}) %{_sysconfdir}/%{name}/vm.args
 
 %dir %attr(0755, %{name}, %{name}) %{_sharedstatedir}/%{name}
 
 %{_unitdir}/%{name}.service
-
+%{_tmpfilesdir}/%{name}.conf
 
 %changelog
+* Fri Nov 2 2018 Oleh Horbachov <gorbyo@gmail.com> 2.2.0-1
+- Add temporary file run dir
+- Bump v2.2.0
+- Updated patches
+
 * Mon Sep 24 2018 Adrien Vergé <adrienverge@gmail.com> 2.1.2-2
 - Use Erlang 20 (previously: 16)
 
