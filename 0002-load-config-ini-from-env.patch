@@ -1,0 +1,31 @@
+From fe461318c019780d764064c9446c2060f639b67b Mon Sep 17 00:00:00 2001
+From: Oleh Horbachov <o.horbachov@kwebbl.com>
+Date: Fri, 2 Nov 2018 15:38:42 +0200
+Subject: [PATCH 2/2] load config ini from env
+
+---
+ rel/overlay/bin/couchdb | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/rel/overlay/bin/couchdb b/rel/overlay/bin/couchdb
+index a9e6e9bea..fce5ef39a 100755
+--- a/rel/overlay/bin/couchdb
++++ b/rel/overlay/bin/couchdb
+@@ -25,11 +25,13 @@ APP_VSN=${START_ERL#* }
+ export BINDIR="$ROOTDIR/erts-$ERTS_VSN/bin"
+ export EMU=beam
+ export PROGNAME=`echo $0 | sed 's/.*\///'`
++export COUCHDB_INI_DEFAULT=
+ 
+ ARGS_FILE="${COUCHDB_ARGS_FILE:-$ROOTDIR/etc/vm.args}"
+ SYSCONFIG_FILE="${COUCHDB_SYSCONFIG_FILE:-$ROOTDIR/releases/$APP_VSN/sys.config}"
++INI_FILES="${COUCHDB_INI_FILES:-$COUCHDB_INI_DEFAULT}"
+ 
+ exec "$BINDIR/erlexec" -boot "$ROOTDIR/releases/$APP_VSN/couchdb" \
+      -args_file "${ARGS_FILE}" \
++     -couch_ini ${INI_FILES} \
+      -config "${SYSCONFIG_FILE}" "$@"
+-
+-- 
+2.17.2
+

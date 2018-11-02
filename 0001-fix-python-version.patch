@@ -1,19 +1,8 @@
-From 4307db07018c34bfb8c1ee2e9842ab58faadbcf9 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Adrien=20Verg=C3=A9?= <adrienverge@gmail.com>
-Date: Mon, 24 Sep 2018 16:19:09 +0200
-Subject: [PATCH] Explicit Python version in scripts
+From 8d2c36edada1f3d4df97b9f25dd57c97ac24db5f Mon Sep 17 00:00:00 2001
+From: Oleh Horbachov <o.horbachov@kwebbl.com>
+Date: Thu, 1 Nov 2018 14:55:33 +0200
+Subject: [PATCH 1/2] fix python version
 
-Recent Linux distributions start defaulting to Python 3, and require
-ambiguous scripts to be more explicit.
-For example building for Fedora 30 (not released yet) fails with:
-
-    ERROR: ambiguous python shebang in /opt/couchdb/bin/couchup:
-    #!/usr/bin/env python. Change it to python3 (or python2) explicitly.
-
-So this commit changes the four Python scripts to use `python2`.
-
-Note: They seem to be Python-3-compatible, but I couldn't be sure. If
-you know they are, please tell me, I'll change it to `python3`.
 ---
  build-aux/logfile-uploader.py | 2 +-
  dev/run                       | 2 +-
@@ -52,7 +41,7 @@ index 2d0105107..6532170aa 100755
  # use this file except in compliance with the License. You may obtain a copy of
  # the License at
 diff --git a/test/javascript/run b/test/javascript/run
-index a3b3ab704..11f9faee2 100755
+index ca69e1ff2..b8d6b9c20 100755
 --- a/test/javascript/run
 +++ b/test/javascript/run
 @@ -1,4 +1,4 @@
@@ -62,5 +51,5 @@ index a3b3ab704..11f9faee2 100755
  # Licensed under the Apache License, Version 2.0 (the "License"); you may not
  # use this file except in compliance with the License. You may obtain a copy of
 -- 
-2.17.1
+2.17.2
 
