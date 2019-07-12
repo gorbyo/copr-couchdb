@@ -13,7 +13,7 @@ Summary:       A document database server, accessible via a RESTful JSON API
 Group:         Applications/Databases
 License:       Apache
 URL:           http://couchdb.apache.org/
-Source0:       http://apache.mirrors.ovh.net/ftp.apache.org/dist/couchdb/source/%{version}/apache-couchdb-%{version}.tar.gz
+Source0:       https://www-eu.apache.org/dist/couchdb/source/%{version}/apache-couchdb-%{version}.tar.gz
 Source1:       %{name}.service
 Source2:       usr-bin-couchdb
 Patch1:        0001-Read-config-from-env-COUCHDB_VM_ARGS-and-COUCHDB_INI.patch
