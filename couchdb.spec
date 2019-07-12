@@ -7,7 +7,7 @@
 %undefine _missing_build_ids_terminate_build
 
 Name:          couchdb
-Version:       2.3.1
+Version:       2.3.0
 Release:       1%{?dist}
 Summary:       A document database server, accessible via a RESTful JSON API
 Group:         Applications/Databases
