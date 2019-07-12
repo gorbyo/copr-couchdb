@@ -21,7 +21,7 @@ Patch1:        0001-Read-config-from-env-COUCHDB_VM_ARGS-and-COUCHDB_INI.patch
 %if 0%{?rhel}
 # Needs packages.erlang-solutions.com repo in /etc/mock/epel-7-x86_64.cfg,
 # because Erlang 17+ is not in official CentOS or EPEL repos.
-BuildRequires: esl-erlang = 21.3
+BuildRequires: erlang = 21.3
 %else
 %if 0%{?fedora} < 30
 # Erlang 21 is not packaged for Fedora 29 and lower
